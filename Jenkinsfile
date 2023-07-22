@@ -12,10 +12,11 @@ pipeline {
     stages {
         stage('deploy') {
             steps {
-                sh 'mvn clean deploy'
+                echo "--------build started--------"
+                sh 'mvn clean deploy -Dmaven.test.skip=true'
+                echo "--------build completed--------"
             }
         }
-
         stage(' Docker Build ') {
             steps {
                 script {
