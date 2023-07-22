@@ -15,6 +15,7 @@ pipeline {
             }
         }
     }
+    //https://bhaskaram.jfrog.io/artifactory/local-libs-release/
     stage("Jar Publish") {
         steps {
             script {
@@ -25,7 +26,7 @@ pipeline {
                           "files": [
                             {
                               "pattern": "jarstaging/(*)",
-                              "target": "local-libs-release-local/{1}",
+                              "target": "local-libs-release/{1}",
                               "flat": "false",
                               "props" : "${properties}",
                               "exclusions": [ "*.sha1", "*.md5"]
