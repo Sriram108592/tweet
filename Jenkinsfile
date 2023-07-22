@@ -1,4 +1,5 @@
-def registry = 'https://bhaskaram.jfrog.io'
+def imageName = 'bhaskaram.jfrog.io/artifactory/docker-docker/ttrend'
+def version   = '2.1.2'
 pipeline {
     agent {
         node {
@@ -14,8 +15,7 @@ pipeline {
                 sh 'mvn clean deploy'
             }
         }
-        def imageName = 'bhaskaram.jfrog.io/artifactory/docker-docker/ttrend'
-        def version   = '2.1.2'
+
         stage(' Docker Build ') {
             steps {
                 script {
@@ -25,8 +25,7 @@ pipeline {
                 }
             }
         }
-
-            stage(' Docker Publish ') {
+        stage(' Docker Publish ') {
             steps {
                 script {
                     echo '<--------------- Docker Publish Started --------------->'
@@ -36,6 +35,6 @@ pipeline {
                     echo '<--------------- Docker Publish Ended --------------->'
                 }
             }
-            }
+        }
     }
 }
