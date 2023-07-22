@@ -1,13 +1,9 @@
-def imageName = 'bhaskaram.jfrog.io/artifactory/docker-docker/ttrend'
-def version   = '2.1.2'
 pipeline {
     agent {
-        node {
-            label 'slave'
-        }
+        label 'slave'
     }
     environment {
-        PATH = "/opt/apache-maven-3.9.2/bin:$PATH"
+        PATH = "/opt/apache-maven-3.9.3/bin:$PATH"
     }
     stages {
         stage('deploy') {
@@ -17,24 +13,35 @@ pipeline {
                 echo "--------build completed--------"
             }
         }
-        stage(' Docker Build ') {
+        stage('test') {
             steps {
-                script {
-                    echo '<--------------- Docker Build Started --------------->'
-                    app = docker.build(imageName + ':' + version)
-                    echo '<--------------- Docker Build Ends --------------->'
+                echo '-----unit test started--------'
+                sh 'mvn surefire-report:report'
+                echo '-----unit test completed--------'
+            }
+        }
+        stage('SonarQube analysis') {
+            environment {
+                scannerHome = tool 'bhaskaram-sonar-scanner'
+            }
+            steps {
+                withSonarQubeEnv('sonar-server') { // If you have configured more than one global server connection, you can specify its name
+                    sh "${scannerHome}/bin/sonar-scanner"
                 }
             }
         }
-        stage(' Docker Publish ') {
+        stage('Quality Gate') {
             steps {
+                echo '-----Quality gate started--------'
                 script {
-                    echo '<--------------- Docker Publish Started --------------->'
-                    docker.withRegistry(registry, 'jfrog-cred') {
-                        app.push()
+                    timeout(time: 1, unit: 'HOURS') {
+                        def qg = waitForQualityGate()
+                        if (qg.status != 'OK') {
+                            error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                        }
                     }
-                    echo '<--------------- Docker Publish Ended --------------->'
                 }
+                echo '-----Quality gate completed--------'
             }
         }
     }
