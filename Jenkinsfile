@@ -14,8 +14,7 @@ pipeline {
                 echo '--------build completed--------'
             }
         }
-    }
-    //https://bhaskaram.jfrog.io/artifactory/local-libs-release/
+        //https://bhaskaram.jfrog.io/artifactory/local-libs-release/
     stage("Jar Publish") {
         steps {
             script {
@@ -41,4 +40,5 @@ pipeline {
             }
         }   
     }
+}
 }
