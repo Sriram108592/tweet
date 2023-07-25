@@ -98,7 +98,7 @@ pipeline {
         stage("kube-deploy"){
             steps{
                 script{
-                    sh './deploy'
+                    sh './deploy.sh'
                 }
             }
         }
