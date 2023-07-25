@@ -1,5 +1,5 @@
 def registry = 'https://bhaskaram.jfrog.io'
-def imageName = 'bhaskaram.jfrog.io/docker-docker/ttrend'
+def imageName = 'bhaskaram.jfrog.io/docker-docker/ttrend_new'
 def version   = '2.1.2'
 pipeline {
     agent {
