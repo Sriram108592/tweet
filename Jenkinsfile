@@ -95,7 +95,15 @@ pipeline {
             }
         }
         //
-  
+  stage(" Deploy ") {
+       steps {
+         script {
+            echo '<--------------- Helm Deploy Started --------------->'
+            sh 'helm install ttrend-v1 ttrend-1.0.1.tgz'
+            echo '<--------------- Helm deploy Ends --------------->'
+         }
+       }
+     } 
         //
     }
 }
