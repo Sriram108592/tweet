@@ -9,14 +9,14 @@ pipeline {
         PATH = "/opt/apache-maven-3.9.3/bin:$PATH"
     }
     stages {
-        stage('deploy') {
+        stage('Build') {
             steps {
                 echo '--------build started--------'
                 sh 'mvn clean deploy -Dmaven.test.skip=true'
                 echo '--------build completed--------'
             }
         }
-        stage('test') {
+        stage('Test') {
             steps {
                 echo '-----unit test started--------'
                 sh 'mvn surefire-report:report'
@@ -48,7 +48,7 @@ pipeline {
             }
         }
         //
-        stage("jfrog") {
+        stage("Jfrog") {
         steps {
             script {
                     echo '<--------------- Jar Publish Started --------------->'
